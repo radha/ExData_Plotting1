@@ -1,0 +1,12 @@
+powcons<-read.csv("household_power_consumption.txt", sep=";", na.strings = "?", stringsAsFactors=F)
+powcons$Date <- as.Date(powcons$Date, "%d/%m/%Y")
+mydates <- as.Date(c("2007-02-01", "2007-02-02"))
+powcons<-powcons[powcons$Date %in% mydates,]
+powcons$Time<-paste(powcons$Date, powcons$Time)
+powcons$Time<-strptime(powcons$Time, "%Y-%m-%d %H:%M:%S")
+png(filename="plot3.png")
+with(powcons, plot(Time, Sub_metering_1, type="l", ylab="Energy sub metering", xlab=""))
+with(powcons, lines(Time,Sub_metering_2, type="l", col="red"))
+with(powcons, lines(Time,Sub_metering_3, type="l", col="blue"))
+legend("topright",c("Sub_metering_1","Sub_metering_2","Sub_metering_3"), lty=c(1,1,1),col=c("black","blue","red"))
+dev.off()
